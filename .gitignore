@@ -1,5 +1,4 @@
 # Dataset (do not commit unless license allows redistribution)
-*.csv
 WA_Fn-UseC_-HR-Employee-Attrition.csv
 
 # Python
