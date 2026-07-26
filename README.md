@@ -48,25 +48,43 @@ Running `Assignment-5.py` produces:
 ## Model Comparison
 | Metric    | Decision Tree | Random Forest |
 |-----------|---------------|----------------|
-| Accuracy  | *see model_comparison.csv after running* | |
-| Precision | | |
-| Recall    | | |
-| F1-Score  | | |
+| Accuracy  | 0.7823 | 0.8435 |
+| Precision | 0.3191 | 0.5455 |
+| Recall    | 0.3191 | 0.1277 |
+| F1-Score  | 0.3191 | 0.2069 |
 
-Random Forest is expected to outperform the single Decision Tree on most
-metrics, since averaging over 100 de-correlated trees reduces variance and
-overfitting relative to any single tree.
+Random Forest wins clearly on accuracy and precision — it makes far fewer
+false-positive "will leave" predictions. However, it has notably lower
+recall than the Decision Tree here, meaning it misses more of the employees
+who actually do leave. This is a common effect of class imbalance (attrition
+"Yes" is the minority class): Random Forest's averaging pushes it toward the
+majority class ("No"), trading recall for precision. Depending on the
+business goal, this trade-off matters — if the priority is catching as many
+at-risk employees as possible (high recall), the Decision Tree's balance of
+precision/recall might actually be more useful despite its lower accuracy;
+if the priority is trusting flagged predictions (high precision), Random
+Forest is the better choice.
 
 ## Conclusion
-Random Forest generally outperforms a standalone Decision Tree because it
-aggregates predictions from many trees trained on bootstrapped samples with
-random feature subsets, which reduces variance and improves generalization.
-A single Decision Tree is prone to overfitting and is highly sensitive to
-small changes in the training data. Random Forest trades away some of that
-interpretability and computational efficiency, and can still be limited if
-built from highly correlated features, but for a prediction task like
-employee attrition — where generalizing to unseen employees matters more
-than reading a single tree's logic — it is the more reliable model.
+On this run, the Random Forest classifier achieved higher accuracy (0.84 vs.
+0.78) and precision (0.55 vs. 0.32) than the Decision Tree, but the Decision
+Tree had noticeably higher recall (0.32 vs. 0.13) on the minority "attrition
+= Yes" class. Overall, Random Forest is the stronger general-purpose model:
+by aggregating 100 trees trained on bootstrapped samples with random feature
+subsets, it reduces the variance and overfitting that a single Decision Tree
+is prone to, which is why its accuracy and precision are higher. Its lower
+recall here is a side effect of the dataset's class imbalance (far fewer
+employees leave than stay) — ensembling tends to favor the majority class
+unless the imbalance is explicitly corrected (e.g., with class weighting or
+resampling). The Decision Tree's main limitation is instability: it can grow
+deep enough to memorize the training data, so small changes in the training
+set can produce a very different tree and inconsistent generalization. Random
+Forest's main limitation is reduced interpretability and higher computational
+cost, since it behaves as a "black box" ensemble of 100 trees rather than a
+single readable decision path. Which model is "better" ultimately depends on
+whether the business cares more about trusting flagged predictions
+(favoring Random Forest's precision) or catching as many at-risk employees
+as possible (favoring the Decision Tree's recall).
 
 ## How to Run
 ```bash
