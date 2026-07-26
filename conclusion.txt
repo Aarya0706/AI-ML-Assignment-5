@@ -1,0 +1,20 @@
+Between the two models, the Random Forest classifier performed better overall,
+achieving higher accuracy, precision, recall, and F1-score than the standalone
+Decision Tree. This is expected because Random Forest is an ensemble method
+that builds 100 individual decision trees on bootstrapped samples of the
+training data, using a random subset of features at each split, and then
+aggregates their predictions through majority voting. This process reduces
+the variance associated with any single tree and makes the model far less
+sensitive to noise and outliers in the training set, resulting in better
+generalization on unseen data. A single Decision Tree, on the other hand, is
+prone to overfitting: it can grow deep enough to perfectly memorize the
+training data, capturing patterns that do not generalize, which shows up as
+inflated errors on the test set. Its main limitation is this high variance
+and instability, since small changes in the training data can produce a very
+different tree. Random Forest largely fixes this, but it comes with its own
+limitations: it is far less interpretable than a single tree (it behaves as
+a "black box" of 100 trees), is more computationally expensive to train and
+store, and can still underperform if most of the trees are built from highly
+correlated, low-signal features. Overall, for a problem like employee
+attrition prediction where generalization matters more than interpretability,
+Random Forest is the more reliable choice.
